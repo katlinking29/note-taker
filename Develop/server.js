@@ -3,6 +3,7 @@
 var express = require("express");
 var path = require("path");
 var fs = require("fs");
+const { v4: uuidv4 } = require('uuid');
 
 // Sets up the Express App
 // =============================================================
@@ -25,22 +26,22 @@ app.get("/notes", function(req, res) {
   res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
 
-// Receive a new note, append it to the db.json file, and return the note
+// Receive a new note, append it to the db.json file, and return the note. Also assigns the note a random id
 app.post("/api/notes", function(req, res) {
-  var note = (req.body); 
-  let newData;
+  let note = (req.body)
+  let id = uuidv4(); 
+  note.id = id
+  let notesArray;
+  let savedNotes = fs.readFileSync("./db/db.json","utf-8");
+  notesArray = JSON.parse(savedNotes);
+  notesArray.push(note);
   
-  let readFile = fs.readFileSync("./db/db.json","utf-8");
-  newData = JSON.parse(readFile);
-  newData.push(note);
- 
-
-  fs.writeFile("./db/db.json", JSON.stringify(newData), function(error){
+  fs.writeFile("./db/db.json", JSON.stringify(notesArray), function(error){
     if (error) {
       console.log(error);
     }
-      console.log(newData);
-      return res.json(newData)  
+      console.log(notesArray); 
+      return res.json(notesArray); 
   });
 });
 
@@ -55,6 +56,19 @@ app.get("/api/notes", function(req, res) {
     return res.json(JSON.parse(data));
   });
 
+});
+
+// deletes the selected note based on the id. 
+app.delete("/api/notes/:id", function(req, res){
+  let savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+  let noteid = req.params.id;
+  console.log(`Deleting note with ID ${noteid}`);
+  savedNotes = savedNotes.filter(currNote => {
+      return currNote.id != noteid;
+    })
+
+    fs.writeFileSync("./db/db.json", JSON.stringify(savedNotes));
+    res.json(savedNotes);
 });
 
 
