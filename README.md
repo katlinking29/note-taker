@@ -1,6 +1,6 @@
 
   # Note Taker Application
-  ![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
+
   
   ## Description
   This application allows the user to create, save, and delete notes to help them organize their thoughts. 
