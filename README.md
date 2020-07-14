@@ -5,14 +5,6 @@
   ## Description
   This application allows the user to create, save, and delete notes to help them organize their thoughts. 
   
-  Table of Contents:
-  * [Installation](#installation)
-  * [Usage](#usage)
-  * [License](#license)
-  * [Credits](#credits)
-  * [Tests](#tests)
-  * [Questions](#questions)
-  
   ## Installation 
   This application can be run in Heroku. 
 
